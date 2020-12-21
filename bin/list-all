@@ -9,10 +9,10 @@ gh_repo="jq"
 
 list_versions() {
   cmd="curl --silent --location"
-  releases_path="https://api.github.com/repos/$gh_org/$gh_repo/releases"
   [ -n "$GITHUB_API_TOKEN" ] && cmd="$cmd --header 'Authorization: token $GITHUB_API_TOKEN'"
+  cmd="$cmd https://api.github.com/repos/$gh_org/$gh_repo/releases"
 
-  eval "$cmd $releases_path" | grep -oE "tag_name\": *\".{1,15}\"," | sed 's/tag_name\": *\"//;s/\",//'
+  eval "$cmd" | grep -oE "tag_name\": *\".{1,15}\"," | sed 's/tag_name\": *\"jq-*//;s/\",//'
 }
 
 sort_versions() {
