@@ -19,14 +19,14 @@ error_exit() {
 }
 
 platform() {
-  local -r os=$(
-    case "$(uname | tr '[:upper:]' '[:lower:]')" in
-      darwin) echo "osx" ;;
-      *) echo "linux" ;;
-    esac
-  )
-
-  echo "${os}-amd64"
+  case "$(uname | tr '[:upper:]' '[:lower:]')" in
+    darwin) 
+      echo "osx-amd64"
+      ;;
+    *) 
+      echo "linux64" 
+      ;;
+  esac
 }
 
 install() {
@@ -40,7 +40,7 @@ install() {
   [ "$install_type" != "version" ] && error_exit "Error: source installs are not supported"
 
   echo "Downloading from ${download_url}"
-  if curl -fL -o "$download_path" "$download_url"; then
+  if curl -fsSL -o "$download_path" "$download_url"; then
     echo "Installing binary"
     mkdir -p "$install_path_bin"
     mv "$download_path" "${install_path_bin}/${BINARY_NAME}"
